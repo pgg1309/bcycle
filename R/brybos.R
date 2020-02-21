@@ -18,7 +18,7 @@
 #'             3 = MA(3), 4 = MA(4), 5 = MA(5), 6 = MA(6)
 #' @param nma number of terms in MA filter for initial TP
 #'            (BB use 12-term asymmetric)
-#' @return A time series after apllying the two-sided Spencer filter.
+#' @return Dates for 'peaks' and 'troughs'  in the yearmon format.
 #'
 brybos <- function(x, ilog, imcd, nma) {
   nd <- length(x)
@@ -202,7 +202,8 @@ brybos <- function(x, ilog, imcd, nma) {
   #'
   #' retp(rec_ind,cal_ind_p,cal_ind_t,bcp5,bct5);
   #'
-return(list(peak = bcp5, trough, bct5))
+return(list(peak = zoo::as.yearmon(time(x)[bcp5]),
+            trough = zoo::as.yearmon(time(x)[bct5])))
 }
 
 
@@ -476,7 +477,7 @@ enfvd <- function(bcp, bct, x) {
   i <- 2
   while (i <= nrow(bcp)) {
     if ((bcp[i,1] - bcp[i - 1,1]) < 15) {
-      s <- as.matrix(rep(FALSE, nrwo(bcp)))
+      s <- as.matrix(rep(FALSE, nrow(bcp)))
       # note eliminate latest peak if equal
       d1 <- bcp[i - 1,1]
       d2 <- bcp[i,1]
@@ -593,6 +594,7 @@ enfve <- function(bcp, bct, x){
 # Function MA -------------------------------------------------------------
 
 MA <- function(x, n) {
+  if (n == 1) return(x)
   xsp <- forecast::ma(x, n)
   # First nm observations (As in BB for MA12 -- modify for mcd)
   n2 <- n / 2

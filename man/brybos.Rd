@@ -21,7 +21,7 @@ brybos(x, ilog, imcd, nma)
 \item{ioutput}{1 for full output, 0 otherwise}
 }
 \value{
-A time series after apllying the two-sided Spencer filter.
+Dates for 'peaks' and 'troughs'  in the yearmon format.
 
 cal_ind_p = zeros(rows(cal),1);
 cal_ind_t = zeros(rows(cal),1);
