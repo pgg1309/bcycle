@@ -47,7 +47,7 @@ spencer <- function(x, lambda = NULL) {
        frequency = frequency(x))
 
   # calculates the filtered ts
-  xsp <- filter(xpad, s, sides = 2)
+  xsp <- stats::filter(xpad, s, sides = 2)
   xsp <- ts(na.omit(xsp), start = tsp(x)[1], frequency = frequency(x))
   return(xsp)
 }
